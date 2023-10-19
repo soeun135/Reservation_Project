@@ -15,15 +15,15 @@ import java.time.LocalDateTime;
 @Table(name = "store")
 @EntityListeners(AuditingEntityListener.class)
 public class Store {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+//    @NotNull
     private String storeName;
-    @NotNull
+//    @NotNull
     private String location;
-    @NotNull
     private String description;
 
     @CreatedDate
@@ -32,4 +32,9 @@ public class Store {
     @ManyToOne
     @JoinColumn(name = "MANAGER_ID")
     private Manager manager;
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
+        manager.getStores().add(this);
+    }
 }
