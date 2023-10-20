@@ -1,9 +1,11 @@
 package com.soni.reservation.Controller;
 
+import com.soni.reservation.domain.Manager;
 import com.soni.reservation.dto.Register;
 import com.soni.reservation.service.ManageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +19,8 @@ public class ManageController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(
-            @RequestBody Register.Request request)
+            @RequestBody @Valid Register.Request request)
     {
-        return null;
+        return ResponseEntity.ok(Manager.toResponse(manageService.register(request)));
     }
 }
