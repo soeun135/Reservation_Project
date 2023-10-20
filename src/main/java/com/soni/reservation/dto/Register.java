@@ -1,8 +1,6 @@
 package com.soni.reservation.dto;
 
 import com.soni.reservation.domain.Manager;
-import com.soni.reservation.type.Authority;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;

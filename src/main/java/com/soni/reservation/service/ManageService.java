@@ -1,6 +1,7 @@
 package com.soni.reservation.service;
 
 import com.soni.reservation.domain.Manager;
+import com.soni.reservation.dto.Login;
 import com.soni.reservation.dto.Register;
 import com.soni.reservation.repository.ManagerRepository;
 import com.soni.reservation.type.Authority;
@@ -32,8 +33,13 @@ public class ManageService implements UserDetailsService {
         return this.managerRepository.save(manager.toEntity());
     }
 
-    public Manager authenticate() {
-        return null;
-    }
+    public Manager authenticate(Login.Request manager) {
+        var user = this.managerRepository.findByMail(manager.getMail())
+                .orElseThrow(() -> new RuntimeException());
 
+        if (!this.passwordEncoder.matches(manager.getPassword(), user.getPassword())) {
+            throw new RuntimeException("비번 일치 안 함");
+        }
+        return user;
+    }
 }
