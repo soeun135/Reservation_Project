@@ -3,6 +3,7 @@ package com.soni.reservation.dto;
 import com.soni.reservation.domain.Member;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 public class MemberDto {
@@ -42,19 +43,10 @@ public class MemberDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class LoginRequest{
-        private String name;
+        @NotBlank
         private String mail;
+        @NotBlank
         private String password;
 
-        private String role;
-
-        public Member toEntity() {
-            return Member.builder()
-                    .name(this.getName())
-                    .password(this.getPassword())
-                    .mail(this.getMail())
-                    .role(this.getRole())
-                    .build();
-        }
     }
 }

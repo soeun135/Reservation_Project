@@ -22,12 +22,14 @@ public class MemberController {
     @PostMapping("/register")
     public ResponseEntity<?> register(
             @RequestBody @Valid MemberDto.RegisterRequest request) {
+
         return ResponseEntity.ok(Member.toResponse(memberService.register(request)));
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody @Valid MemberDto.RegisterRequest request) {
-        return ResponseEntity.ok(Member.toResponse(memberService.register(request)));
+
+        return ResponseEntity.ok(memberService.authenticate(request));
     }
 }
