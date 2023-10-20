@@ -7,4 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Repository
 public interface StoreRepository extends JpaRepository<Store, Long> {
+    int countByStoreNameIsGreaterThanEqual(String storeName);
 }
