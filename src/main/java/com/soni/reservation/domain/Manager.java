@@ -1,6 +1,6 @@
 package com.soni.reservation.domain;
 
-import com.soni.reservation.dto.Register;
+import com.soni.reservation.dto.ManagerDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -43,8 +43,8 @@ public class Manager implements UserDetails {
     @OneToMany(mappedBy = "manager",cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Store> stores = new ArrayList<>();
 
-    public static Register.Response toResponse(Manager manager) {
-        return Register.Response.builder()
+    public static ManagerDto.RegisterResponse toResponse(Manager manager) {
+        return ManagerDto.RegisterResponse.builder()
                 .mail(manager.getMail())
                 .registeredAt(manager.getCreatedAt())
                 .build();

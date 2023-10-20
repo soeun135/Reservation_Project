@@ -6,13 +6,13 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-public class Register {
+public class ManagerDto {
 
     @Getter
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Request{
+    public static class RegisterRequest {
         @NotBlank
         private String name;
         @NotBlank
@@ -37,8 +37,19 @@ public class Register {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
+    public static class RegisterResponse {
         private String mail;
         private LocalDateTime registeredAt;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LoginRequest {
+        @NotBlank
+        private String mail;
+        @NotBlank
+        private String password;
     }
 }

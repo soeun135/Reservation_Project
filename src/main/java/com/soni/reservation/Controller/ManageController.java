@@ -1,11 +1,9 @@
 package com.soni.reservation.Controller;
 
 import com.soni.reservation.domain.Manager;
-import com.soni.reservation.domain.Store;
 import com.soni.reservation.dto.Login;
-import com.soni.reservation.dto.Register;
+import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.dto.StoreDto;
-import com.soni.reservation.security.TokenProvider;
 import com.soni.reservation.service.ManageService;
 import com.soni.reservation.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +22,13 @@ public class ManageController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(
-            @RequestBody @Valid Register.Request request)
+            @RequestBody @Valid ManagerDto.RegisterRequest request)
     {
         return ResponseEntity.ok(Manager.toResponse(manageService.register(request)));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid Login.Request request) {
+    public ResponseEntity<?> login(@RequestBody @Valid ManagerDto.LoginRequest request) {
         return ResponseEntity.ok(this.manageService.authenticate(request));
     }
 

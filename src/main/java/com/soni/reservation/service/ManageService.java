@@ -2,7 +2,7 @@ package com.soni.reservation.service;
 
 import com.soni.reservation.domain.Manager;
 import com.soni.reservation.dto.Login;
-import com.soni.reservation.dto.Register;
+import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.repository.ManagerRepository;
 import com.soni.reservation.security.TokenProvider;
 import com.soni.reservation.type.Authority;
@@ -26,7 +26,7 @@ public class ManageService implements UserDetailsService {
         return this.managerRepository.findByMail(mail)
                 .orElseThrow(RuntimeException::new);
     }
-    public Manager register(Register.Request manager) {
+    public Manager register(ManagerDto.RegisterRequest manager) {
         boolean exists = this.managerRepository.existsByMail(manager.getMail());
         if (exists) {
             throw new RuntimeException();
@@ -36,7 +36,7 @@ public class ManageService implements UserDetailsService {
         return this.managerRepository.save(manager.toEntity());
     }
 
-    public String authenticate(Login.Request manager) {
+    public String authenticate(ManagerDto.LoginRequest manager) {
         var user = this.managerRepository.findByMail(manager.getMail())
                 .orElseThrow(() -> new RuntimeException());
 
