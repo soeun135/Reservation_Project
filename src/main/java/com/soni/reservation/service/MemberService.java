@@ -19,7 +19,7 @@ public class MemberService {
     public Member register(MemberDto.RegisterRequest member) {
         validate(member);
 
-        member.setRole(String.valueOf(Authority.ROLE_USER));
+        member.setRole(String.valueOf(Authority.ROLE_MEMBER));
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         return memberRepository.save(member.toEntity());
     }

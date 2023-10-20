@@ -6,6 +6,7 @@ import com.soni.reservation.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,4 +21,18 @@ public class StoreController {
 
         return ResponseEntity.ok(Store.toResponse(storeService.searchStore(storeName)));
     }
+
+    //회원가입 된 사람만 가능 ! 인데 회원 정보를 ....
+    @PatchMapping("/store/reservation/{storeName}")
+    @PreAuthorize("hasRole('MEMBER')")
+    public ResponseEntity<?> reserveStore(
+            @PathVariable String storeName,
+            @RequestParam Long memberId) {
+
+        storeService.addReserve(storeName, memberId);
+        return null;
+
+    }
+
+
 }

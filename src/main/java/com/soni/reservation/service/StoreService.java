@@ -4,6 +4,7 @@ import com.soni.reservation.domain.Manager;
 import com.soni.reservation.domain.Store;
 import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.repository.ManagerRepository;
+import com.soni.reservation.repository.MemberRepository;
 import com.soni.reservation.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class StoreService {
     private final ManagerRepository managerRepository;
+    private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
-    public StoreDto.AddStoreResponse addStore(StoreDto.AddStoreRequest store, Long managerId) {
+    public StoreDto.StoreResponse addStore(StoreDto.AddStoreRequest store, Long managerId) {
 
         validation(store, managerId);
 
@@ -23,7 +25,7 @@ public class StoreService {
         storeEntity.setManager(manager);
 
         var result = storeRepository.save(storeEntity);
-        return StoreDto.AddStoreResponse.builder()
+        return StoreDto.StoreResponse.builder()
                 .storeName(result.getStoreName())
                 .createdAt(result.getCreatedAt())
                 .build();
@@ -46,5 +48,21 @@ public class StoreService {
     public Store searchStore(String storeName) {
         return storeRepository.findByStoreName(storeName)
                 .orElseThrow(() -> new RuntimeException("없는 매장입니다."));
+    }
+
+    public StoreDto.StoreResponse addReserve(String storeName, Long memberId) {
+        var member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("가입되지 않은 회원입니다."));
+
+        var store = storeRepository.findByStoreName(storeName)
+                .orElseThrow(() -> new RuntimeException("매장이 없습니다."));
+
+        member.setStore(store);
+        memberRepository.save(member);
+
+        return StoreDto.StoreResponse.builder()
+                .storeName()
+                .createdAt()
+                .build();
     }
 }

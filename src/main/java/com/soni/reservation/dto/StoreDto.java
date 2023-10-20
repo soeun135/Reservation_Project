@@ -33,7 +33,7 @@ public class StoreDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class AddStoreResponse{
+    public static class StoreResponse {
         private String storeName;
         private LocalDateTime createdAt;
     }
