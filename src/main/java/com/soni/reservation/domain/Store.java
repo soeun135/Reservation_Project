@@ -20,9 +20,7 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotNull
     private String storeName;
-//    @NotNull
     private String location;
     private String description;
 
