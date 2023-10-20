@@ -1,5 +1,6 @@
 package com.soni.reservation.domain;
 
+import com.soni.reservation.dto.StoreDto;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -36,5 +37,13 @@ public class Store {
     public void setManager(Manager manager) {
         this.manager = manager;
         manager.getStores().add(this);
+    }
+
+    public static StoreDto.SearchStoreResponse toResponse(Store store) {
+        return StoreDto.SearchStoreResponse.builder()
+                .storeName(store.getStoreName())
+                .location(store.getLocation())
+                .description(store.getDescription())
+                .build();
     }
 }

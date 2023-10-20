@@ -37,4 +37,15 @@ public class StoreDto {
         private String storeName;
         private LocalDateTime createdAt;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class SearchStoreResponse{
+        private String storeName;
+        private String location;
+        private String description;
+    }
 }

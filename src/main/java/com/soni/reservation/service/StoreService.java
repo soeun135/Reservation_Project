@@ -42,4 +42,9 @@ public class StoreService {
             throw new RuntimeException("중복된 매장 명입니다.");
         }
     }
+
+    public Store searchStore(String storeName) {
+        return storeRepository.findByStoreName(storeName)
+                .orElseThrow(() -> new RuntimeException("없는 매장입니다."));
+    }
 }
