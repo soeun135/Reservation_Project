@@ -8,6 +8,8 @@ import com.soni.reservation.service.ManageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import javax.validation.Valid;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +31,11 @@ public class ManageController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid Login.Request request) {
         return ResponseEntity.ok(this.manageService.authenticate(request));
+    }
+
+    @PostMapping("/store")
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<?> addStore() {
+        return null;
     }
 }

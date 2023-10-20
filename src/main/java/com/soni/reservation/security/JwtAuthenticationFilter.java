@@ -24,6 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {//한 요청�
     public static final String TOKEN_PREFIX = "Bearer ";//인증타입을 나타내기 위해 쓰는데 JWT 토큰은 앞에 Bearer를 붙임.
 
     private final TokenProvider tokenProvider;
+    private final GetAuthentication getAuthentication;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -34,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {//한 요청�
         if (StringUtils.hasText(token) && this.tokenProvider.validateToken(token)) {
             //토큰 유효성 검증 완료
             // Spring Security에 인증정보를 넣어주기 위해 TokenProvider에 getAuthentication 메소드 추가
-            Authentication auth = this.tokenProvider.getAuthentication(token);
+            Authentication auth = this.getAuthentication.getAuthentication(token);
             //Authentication은 현재 접근하는 주체의 정보와 권한을 담는 인터페이스.
             //Authentication 객체는 Security Context에 저장되며
             //SecurityContextHolder 통해 SecurityContext에 접근,
