@@ -22,8 +22,8 @@ public class ManageService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.managerRepository.findByMail(username)
+    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
+        return this.managerRepository.findByMail(mail)
                 .orElseThrow(RuntimeException::new);
     }
     public Manager register(Register.Request manager) {

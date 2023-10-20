@@ -1,11 +1,15 @@
 package com.soni.reservation.security;
 
+import com.soni.reservation.service.ManageService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -16,6 +20,8 @@ import java.util.Date;
 public class TokenProvider {
     private static final long TOKEN_EXPIRE_TIME = 1000 * 60 * 60; // 1시간
     private static final String KEY_ROLE = "role";
+
+    private final ManageService manageService;
     @Value("${spring.jwt.secret}")
     private String secretKey;
 
@@ -32,6 +38,15 @@ public class TokenProvider {
                 .setExpiration(expiredDate)
                 .signWith(SignatureAlgorithm.HS512, this.secretKey)//사용할 암호화 알고리즘, 비밀키로 서명
                 .compact();
+    }
+
+    public Authentication getAuthentication(String jwt) {
+        //jwt 토큰으로부터 인증정보를 가져옴
+        UserDetails userDetails = this.manageService.loadUserByUsername(this.getMail(jwt));
+
+        //스프링에서 지원해주는 토큰 형식으로 바꿔줌.
+        //리턴되는 토큰은 사용자 정보와 사용자 권한 정보를 가지게 됨.
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
     //토큰이 유효한지 검증하는 메소드
     //만들기 전에 토큰으로부터 Claims 가져오는 메소드 먼저 구현
