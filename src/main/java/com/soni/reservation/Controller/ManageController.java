@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ManageController {
     private final ManageService manageService;
-    private final TokenProvider tokenProvider;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(
@@ -29,8 +28,6 @@ public class ManageController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid Login.Request request) {
-        var manager = this.manageService.authenticate(request);
-        var token = this.tokenProvider.generateToken(manager.getMail(), manager.getRole());
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(this.manageService.authenticate(request));
     }
 }
