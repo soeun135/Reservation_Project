@@ -30,9 +30,8 @@ public class Member {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @OneToOne
-    @JoinColumn(name = "store_id")
-    private Store store;
+    @OneToOne(mappedBy = "reserve_id")
+    private Reserve reserve;
 
     public static MemberDto.RegisterResponse toResponse(Member member) {
         return MemberDto.RegisterResponse.builder()
