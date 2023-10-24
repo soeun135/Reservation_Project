@@ -2,6 +2,7 @@ package com.soni.reservation.service;
 
 import com.soni.reservation.domain.Manager;
 import com.soni.reservation.domain.Store;
+import com.soni.reservation.dto.ReserveDto;
 import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.repository.ManagerRepository;
 import com.soni.reservation.repository.MemberRepository;
@@ -48,21 +49,5 @@ public class StoreService {
     public Store searchStore(String storeName) {
         return storeRepository.findByStoreName(storeName)
                 .orElseThrow(() -> new RuntimeException("없는 매장입니다."));
-    }
-
-    public StoreDto.StoreResponse addReserve(String storeName, Long memberId) {
-        var member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("가입되지 않은 회원입니다."));
-
-        var store = storeRepository.findByStoreName(storeName)
-                .orElseThrow(() -> new RuntimeException("매장이 없습니다."));
-
-        member.setStore(store);
-        memberRepository.save(member);
-
-        return StoreDto.StoreResponse.builder()
-                .storeName()
-                .createdAt()
-                .build();
     }
 }

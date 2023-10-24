@@ -1,6 +1,7 @@
 package com.soni.reservation.Controller;
 
 import com.soni.reservation.domain.Store;
+import com.soni.reservation.dto.ReserveDto;
 import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -20,18 +21,6 @@ public class StoreController {
             @PathVariable String storeName) {
 
         return ResponseEntity.ok(Store.toResponse(storeService.searchStore(storeName)));
-    }
-
-    //회원가입 된 사람만 가능 ! 인데 회원 정보를 ....
-    @PatchMapping("/store/reservation/{storeName}")
-    @PreAuthorize("hasRole('MEMBER')")
-    public ResponseEntity<?> reserveStore(
-            @PathVariable String storeName,
-            @RequestParam Long memberId) {
-
-        storeService.addReserve(storeName, memberId);
-        return null;
-
     }
 
 
