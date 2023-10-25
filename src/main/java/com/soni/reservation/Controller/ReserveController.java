@@ -16,12 +16,20 @@ public class ReserveController {
     //회원가입 된 사람만 가능 ! 인데 회원 정보를 ....
     @PostMapping("/{memberId}")
     @PreAuthorize("hasRole('MEMBER')")
-    public ResponseEntity<?> reserveStore(
+    public ResponseEntity<?> addReserve(
             @PathVariable Long memberId,
             @RequestBody ReserveDto request) {
 
         reserveService.addReserve(memberId, request);
         return null;
 
+    }
+
+    @PostMapping("/confirm/{reserveNum}")
+    public ResponseEntity<?> confirmReserve(
+            @PathVariable String reserveNum
+    ) {
+        reserveService.confirmReserve();
+        return null;
     }
 }

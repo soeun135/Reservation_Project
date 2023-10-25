@@ -10,6 +10,7 @@ public class ManagerDto {
 
     @Getter
     @Setter
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RegisterRequest {

@@ -7,6 +7,7 @@ import com.soni.reservation.service.ManageService;
 import com.soni.reservation.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,8 +22,7 @@ public class ManageController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(
-            @RequestBody @Valid ManagerDto.RegisterRequest request)
-    {
+            @RequestBody @Valid ManagerDto.RegisterRequest request) {
         return ResponseEntity.ok(Manager.toResponse(manageService.register(request)));
     }
 
