@@ -1,6 +1,7 @@
 package com.soni.reservation.domain;
 
 import lombok.*;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -20,17 +21,21 @@ public class Reserve {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String reserveNum;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
     private LocalDateTime reservedAt;
 
-    @OneToOne
+    private Boolean visited;
+
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "STORE_ID")
+    @JoinColumn(name = "store_id")
     private Store store;
 
 }

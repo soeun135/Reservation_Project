@@ -8,6 +8,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,9 +33,11 @@ public class Store {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "MANAGER_ID")
+    @JoinColumn(name = "manager_id")
     private Manager manager;
 
+    @OneToMany(mappedBy = "store")
+    private List<Review> review = new ArrayList<>();
     public void setManager(Manager manager) {
         this.manager = manager;
         manager.getStores().add(this);

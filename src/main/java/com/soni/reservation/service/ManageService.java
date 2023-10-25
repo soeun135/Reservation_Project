@@ -37,7 +37,7 @@ public class ManageService implements UserDetailsService {
 
     public String authenticate(ManagerDto.LoginRequest manager) {
         var user = this.managerRepository.findByMail(manager.getMail())
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new RuntimeException("해당 회원이 없습니다."));
 
         if (!this.passwordEncoder.matches(manager.getPassword(), user.getPassword())) {
             throw new RuntimeException("비번 일치 안 함");

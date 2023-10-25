@@ -20,8 +20,7 @@ public class ReserveController {
             @PathVariable Long memberId,
             @RequestBody ReserveDto request) {
 
-        reserveService.addReserve(memberId, request);
-        return null;
+        return ResponseEntity.ok(reserveService.addReserve(memberId, request));
 
     }
 
@@ -29,7 +28,7 @@ public class ReserveController {
     public ResponseEntity<?> confirmReserve(
             @PathVariable String reserveNum
     ) {
-        reserveService.confirmReserve();
+        reserveService.confirmReserve(reserveNum);
         return null;
     }
 }

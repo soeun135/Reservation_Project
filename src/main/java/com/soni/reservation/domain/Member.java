@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -35,8 +36,11 @@ public class Member implements UserDetails {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "member")
-    private Reserve reserve;
+    @OneToMany(mappedBy = "member")
+    private List<Reserve> reserve = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Review> review = new ArrayList<>();
 
     public static MemberDto.RegisterResponse toResponse(Member member) {
         return MemberDto.RegisterResponse.builder()
