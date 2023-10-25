@@ -2,7 +2,6 @@ package com.soni.reservation.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.soni.reservation.dto.StoreDto;
-import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

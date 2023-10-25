@@ -6,13 +6,11 @@ import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.service.ManageService;
 import com.soni.reservation.service.StoreService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import javax.validation.Valid;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/manager")

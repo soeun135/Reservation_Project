@@ -1,14 +1,13 @@
 package com.soni.reservation.Controller;
 
 import com.soni.reservation.domain.Store;
-import com.soni.reservation.dto.ReserveDto;
-import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.service.StoreService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/store")

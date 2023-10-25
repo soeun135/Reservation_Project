@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class ReserveController {
     private final ReserveService reserveService;
 
-    //회원가입 된 사람만 가능 ! 인데 회원 정보를 ....
     @PostMapping("/{memberId}")
     @PreAuthorize("hasRole('MEMBER')")
     public ResponseEntity<?> addReserve(

@@ -2,11 +2,9 @@ package com.soni.reservation.service;
 
 import com.soni.reservation.domain.Manager;
 import com.soni.reservation.domain.Store;
-import com.soni.reservation.dto.ReserveDto;
 import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.exception.StoreException;
 import com.soni.reservation.repository.ManagerRepository;
-import com.soni.reservation.repository.MemberRepository;
 import com.soni.reservation.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +15,6 @@ import static com.soni.reservation.type.ErrorCode.*;
 @RequiredArgsConstructor
 public class StoreService {
     private final ManagerRepository managerRepository;
-    private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
     public StoreDto.StoreResponse addStore(StoreDto.AddStoreRequest store, Long managerId) {
 

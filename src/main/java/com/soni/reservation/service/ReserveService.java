@@ -2,9 +2,7 @@ package com.soni.reservation.service;
 
 import com.soni.reservation.domain.Reserve;
 import com.soni.reservation.dto.ReserveDto;
-import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.exception.ReserveException;
-import com.soni.reservation.exception.UserException;
 import com.soni.reservation.repository.MemberRepository;
 import com.soni.reservation.repository.ReserveRepository;
 import com.soni.reservation.repository.StoreRepository;
@@ -34,7 +32,7 @@ public class ReserveService {
         }
         String reserveNum = this.getReserveNum(memberId, reserve);
 
-        Reserve save = reserveRepository.save(
+        reserveRepository.save(
                 Reserve.builder()
                         .reservedAt(reserve.getReservedAt())
                         .member(member)

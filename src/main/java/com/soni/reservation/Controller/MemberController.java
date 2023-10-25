@@ -2,7 +2,6 @@ package com.soni.reservation.Controller;
 
 import com.soni.reservation.domain.Member;
 import com.soni.reservation.dto.LoginDto;
-import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.dto.MemberDto;
 import com.soni.reservation.service.MemberService;
 import lombok.RequiredArgsConstructor;

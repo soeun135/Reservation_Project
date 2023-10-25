@@ -2,7 +2,6 @@ package com.soni.reservation.exception;
 
 import com.soni.reservation.type.ErrorCode;
 import lombok.*;
-import org.springframework.scheduling.annotation.Scheduled;
 
 @Getter
 @Setter
