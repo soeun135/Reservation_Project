@@ -15,10 +15,9 @@ public class ReviewController {
 
     @PostMapping("/{reserveNum}")
     public ResponseEntity<?> addReview(
-            @RequestBody ReviewDto review,
+            @RequestBody ReviewDto.Request request,
             @PathVariable String reserveNum
             ) {
-        reviewService.addReview(review, reserveNum);
-        return null;
+        return ResponseEntity.ok(reviewService.addReview(request, reserveNum));
     }
 }

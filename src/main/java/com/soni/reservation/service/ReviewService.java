@@ -5,8 +5,6 @@ import com.soni.reservation.domain.Review;
 import com.soni.reservation.dto.ReviewDto;
 import com.soni.reservation.repository.ReserveRepository;
 import com.soni.reservation.repository.ReviewRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +14,7 @@ public class ReviewService {
     private final ReserveRepository reserveRepository;
     private final ReviewRepository reviewRepository;
 
-    public ReviewDto addReview(ReviewDto review, String reserveNum) {
+    public ReviewDto.Response addReview(ReviewDto.Request review, String reserveNum) {
         Reserve reserve = reserveRepository.findByReserveNum(reserveNum)
                 .orElseThrow(() -> new RuntimeException("해당 예약번호에 따른 예약이 없습니다."));
 
@@ -29,7 +27,7 @@ public class ReviewService {
                         .text(review.getText())
                         .build()
         );
-        return ReviewDto.builder()
+        return ReviewDto.Response.builder()
                 .storeName(savedReview.getStore().getStoreName())
                 .memberName(savedReview.getMember().getName())
                 .text(savedReview.getText())

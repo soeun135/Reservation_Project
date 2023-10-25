@@ -8,14 +8,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Builder
-public class ReviewDto {
 
-    private String memberName;
-    private String storeName;
-    private String text;
+public class ReviewDto {
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    @Builder
+    public static class Request{
+        private String text;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    @Builder
+    public static class Response{
+        private String memberName;
+        private String storeName;
+        private String text;
+    }
+
 }
