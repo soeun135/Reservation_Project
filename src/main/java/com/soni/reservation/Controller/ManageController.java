@@ -19,17 +19,26 @@ public class ManageController {
     private final ManageService manageService;
     private final StoreService storeService;
 
+    /**
+     * 점장 회원가입
+     */
     @PostMapping("/register")
     public ResponseEntity<?> register(
             @RequestBody @Valid ManagerDto.RegisterRequest request) {
         return ResponseEntity.ok(Manager.toResponse(manageService.register(request)));
     }
 
+    /**
+     * 점장 로그인
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid ManagerDto.LoginRequest request) {
         return ResponseEntity.ok(this.manageService.authenticate(request));
     }
 
+    /**
+     * 매장 등록
+     */
     @PostMapping("/store/{managerId}")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> addStore(@RequestBody @Valid StoreDto.AddStoreRequest store,

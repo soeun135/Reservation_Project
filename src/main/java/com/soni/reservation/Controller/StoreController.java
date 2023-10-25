@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class StoreController {
     private final StoreService storeService;
 
+    /**
+     * 매장 검색
+     */
     @GetMapping("/search/{storeName}")
     public ResponseEntity<?> searchStore(
             @PathVariable String storeName) {

@@ -19,6 +19,9 @@ import javax.validation.Valid;
 public class MemberController {
     private final MemberService memberService;
 
+    /**
+     * 이용자 회원가입
+     */
     @PostMapping("/register")
     public ResponseEntity<?> register(
             @RequestBody @Valid MemberDto.RegisterRequest request) {
@@ -26,6 +29,9 @@ public class MemberController {
         return ResponseEntity.ok(Member.toResponse(memberService.register(request)));
     }
 
+    /**
+     * 이용자 로그인
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody @Valid LoginDto request) {

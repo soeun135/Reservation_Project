@@ -20,6 +20,9 @@ public class ReserveService {
     private final ReserveRepository reserveRepository;
     private final StoreRepository storeRepository;
 
+    /**
+     * 매장 예약
+     */
     public ReserveDto addReserve(Long memberId, ReserveDto reserve) {
         var member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ReserveException(USER_NOT_FOUND));
@@ -47,6 +50,9 @@ public class ReserveService {
                 .build();
     }
 
+    /**
+     * 예약번호 발급
+     */
     private String getReserveNum(Long memberId, ReserveDto reserve) {
         return memberId +
                 Integer.toString(reserve.getReservedAt().getYear()) +
@@ -54,6 +60,9 @@ public class ReserveService {
                         reserve.getReservedAt().getDayOfMonth();
     }
 
+    /**
+     * 예약 방문 확인
+     */
     public void confirmReserve(String reserveNum) {
         Reserve reserve = reserveRepository.findByReserveNum(reserveNum)
                 .orElseThrow(() -> new ReserveException(RESERVE_NOT_FOUND));
@@ -64,6 +73,9 @@ public class ReserveService {
         reserveRepository.save(reserve);
     }
 
+    /**
+     * 예약 방문 확인 시 유효한지 확인
+     */
     private void validate(Reserve reserved) {
         if (LocalDateTime.now().compareTo(reserved.getReservedAt().plusMinutes(10)) > 0) {
             throw new ReserveException(RESERVE_CANCELED);

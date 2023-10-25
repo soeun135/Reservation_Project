@@ -29,6 +29,9 @@ public class MemberService implements UserDetailsService {
                 .orElseThrow(RuntimeException::new);
     }
 
+    /**
+     * 이용자 회원가입
+     */
     public Member register(MemberDto.RegisterRequest member) {
         validate(member);
 
@@ -37,6 +40,9 @@ public class MemberService implements UserDetailsService {
         return memberRepository.save(member.toEntity());
     }
 
+    /**
+     * 회원가입 유효한지 확인
+     */
     private void validate(MemberDto.RegisterRequest member) {
         boolean exists = memberRepository.existsByMail(member.getMail());
         if (exists) {
@@ -44,6 +50,9 @@ public class MemberService implements UserDetailsService {
         }
     }
 
+    /**
+     * 로그인 유효한지 확인
+     */
     public String authenticate(LoginDto member) {
         var user = memberRepository.findByMail(member.getMail())
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));

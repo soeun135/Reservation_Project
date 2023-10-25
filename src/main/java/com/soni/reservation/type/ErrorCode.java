@@ -7,12 +7,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
     INTERNAL_SERVER_ERROR("내부 서버 오류가 발생했습니다."),
-    USER_DUPLICATED("o중복된 회원입니다."),
-    USER_NOT_FOUND("o해당 아이디에 해당하는 회원이 없습니다."),
-    PASSWORD_UNMATCHED("o비밀번호가 일치하지 않습니다."),
-    MANAGER_NOT_FOUND("o해당 점장이 없습니다."),
-    STORE_NOT_FOUND("o해당 매장이 없습니다."),
-    STORE_DUPLICATED("o중복된 매장 명입니다."),
+    USER_DUPLICATED("중복된 회원입니다."),
+    USER_NOT_FOUND("해당 아이디에 해당하는 회원이 없습니다."),
+    PASSWORD_UNMATCHED("비밀번호가 일치하지 않습니다."),
+    MANAGER_NOT_FOUND("해당 점장이 없습니다."),
+    STORE_NOT_FOUND("해당 매장이 없습니다."),
+    STORE_DUPLICATED("중복된 매장 명입니다."),
     RESERVE_IS_FULL("해당 시간에 예약이 다 찼습니다."),
     RESERVE_NOT_FOUND("예약 건이 없습니다."),
     RESERVE_CANCELED("예약시간 10분 전에 방문하지 않아 예약이 취소되었습니다."),

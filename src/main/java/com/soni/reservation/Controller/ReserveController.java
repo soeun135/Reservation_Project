@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 public class ReserveController {
     private final ReserveService reserveService;
 
+    /**
+     * 매장 예약
+     */
     @PostMapping("/{memberId}")
     @PreAuthorize("hasRole('MEMBER')")
     public ResponseEntity<?> addReserve(
@@ -23,6 +26,9 @@ public class ReserveController {
 
     }
 
+    /**
+     * 키오스크에서 방문 확인
+     */
     @PostMapping("/confirm/{reserveNum}")
     public ResponseEntity<?> confirmReserve(
             @PathVariable String reserveNum

@@ -37,6 +37,10 @@ public class ManageService implements UserDetailsService {
         return this.managerRepository.findByMail(mail)
                 .orElseThrow(RuntimeException::new);
     }
+
+    /**
+     * 점장 회원가입
+     */
     public Manager register(ManagerDto.RegisterRequest manager) {
         validate(manager);
 
@@ -45,6 +49,9 @@ public class ManageService implements UserDetailsService {
         return this.managerRepository.save(manager.toEntity());
     }
 
+    /**
+     * 회원가입 유효한지 확인
+     */
     private void validate(ManagerDto.RegisterRequest manager) {
         boolean exists = this.managerRepository.existsByMail(manager.getMail());
         if (exists) {
@@ -52,6 +59,9 @@ public class ManageService implements UserDetailsService {
         }
     }
 
+    /**
+     * 로그인 유효한지 확인
+     */
     public String authenticate(ManagerDto.LoginRequest manager) {
         var user = this.managerRepository.findByMail(manager.getMail())
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));
@@ -62,18 +72,26 @@ public class ManageService implements UserDetailsService {
         return this.tokenProvider.generateToken(user.getMail(), user.getRole());
     }
 
-
+    /**
+     * 해당 점장 기준 등록된 매장 확인
+     */
     public List<Store> searchStore(Long managerId) {
         List<Store> storeList = storeRepository.findByManagerId(managerId)
                 .orElseThrow(() -> new ManagerException(STORE_NOT_FOUND));
         return storeList;
     }
 
+    /**
+     * 해당 매장 기준 등록된 예약 확인
+     */
     public List<Reserve> searchReserve(Long storeId) {
         return reserveRepository.findByStoreId(storeId)
                 .orElseThrow(() -> new ManagerException(RESERVE_NOT_FOUND));
     }
 
+    /**
+     * 예약 승인
+     */
     public void confirmReserve(Long reserveId) {
         Reserve reserve = reserveRepository.findById(reserveId)
                 .orElseThrow(() -> new ManagerException(RESERVE_NOT_FOUND));

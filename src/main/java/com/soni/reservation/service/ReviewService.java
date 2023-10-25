@@ -17,6 +17,9 @@ public class ReviewService {
     private final ReserveRepository reserveRepository;
     private final ReviewRepository reviewRepository;
 
+    /**
+     * 리뷰 작성
+     */
     public ReviewDto.Response addReview(ReviewDto.Request review, String reserveNum) {
         Reserve reserve = reserveRepository.findByReserveNum(reserveNum)
                 .orElseThrow(() -> new ReviewException(RESERVE_NOT_FOUND));
@@ -37,6 +40,9 @@ public class ReviewService {
                 .build();
     }
 
+    /**
+     * 리뷰 작성하기 위해 방문했는지 확인
+     */
     private void validateVisited(Reserve reserve) {
         if (!reserve.getVisited()) {
             throw new ReviewException(REVIEW_NOT_ALLOWED);

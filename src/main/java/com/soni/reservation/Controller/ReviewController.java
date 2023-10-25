@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewController {
     private final ReviewService reviewService;
 
+    /**
+     * 리뷰작성
+     */
     @PostMapping("/{reserveNum}")
     @PreAuthorize("hasRole('MEMBER')")
     public ResponseEntity<?> addReview(
