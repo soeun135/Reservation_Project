@@ -39,7 +39,7 @@ public class StoreService {
             throw new RuntimeException("존재하지 않는 점장입니다.");
         }
 
-        int count = storeRepository.countByStoreNameIsGreaterThanEqual(store.getStoreName());
+        int count = storeRepository.countByStoreName(store.getStoreName());
 
         if (count > 0) {
             throw new RuntimeException("중복된 매장 명입니다.");

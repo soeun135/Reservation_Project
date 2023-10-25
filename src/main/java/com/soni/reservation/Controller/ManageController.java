@@ -6,6 +6,7 @@ import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.service.ManageService;
 import com.soni.reservation.service.StoreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import javax.validation.Valid;
@@ -36,5 +37,31 @@ public class ManageController {
     public ResponseEntity<?> addStore(@RequestBody @Valid StoreDto.AddStoreRequest store,
                                       @PathVariable Long managerId) {
         return ResponseEntity.ok(storeService.addStore(store, managerId));
+    }
+
+    @GetMapping("/searchStore/{managerId}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<?> searchStore(
+            @PathVariable Long managerId
+    ) {
+        return ResponseEntity.ok(manageService.searchStore(managerId));
+    }
+
+    @GetMapping("/searchReserve/{managerId}/{storeId}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<?> searchReserve(
+            @PathVariable Long managerId,
+            @PathVariable Long storeId
+    ) {
+        return ResponseEntity.ok(manageService.searchReserve(managerId, storeId));
+    }
+
+    @PatchMapping("/reserveConfirm/{reserveId}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<?> confirmReserve(
+            @PathVariable Long reserveId
+    ) {
+        manageService.confirmReserve(reserveId);
+        return ResponseEntity.ok(reserveId + " 예약을 승인했습니다.");
     }
 }

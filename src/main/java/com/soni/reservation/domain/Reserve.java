@@ -1,5 +1,6 @@
 package com.soni.reservation.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,10 +31,14 @@ public class Reserve {
 
     private Boolean visited;
 
+    private Boolean confirm;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;

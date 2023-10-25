@@ -1,5 +1,6 @@
 package com.soni.reservation.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.soni.reservation.dto.StoreDto;
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -32,16 +33,14 @@ public class Store {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "manager_id")
     private Manager manager;
 
     @OneToMany(mappedBy = "store")
     private List<Review> review = new ArrayList<>();
-    public void setManager(Manager manager) {
-        this.manager = manager;
-        manager.getStores().add(this);
-    }
+
 
     public static StoreDto.SearchStoreResponse toResponse(Store store) {
         return StoreDto.SearchStoreResponse.builder()
