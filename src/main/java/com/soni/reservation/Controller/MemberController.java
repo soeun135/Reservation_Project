@@ -1,6 +1,7 @@
 package com.soni.reservation.Controller;
 
 import com.soni.reservation.domain.Member;
+import com.soni.reservation.dto.LoginDto;
 import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.dto.MemberDto;
 import com.soni.reservation.service.MemberService;
@@ -28,7 +29,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
-            @RequestBody @Valid MemberDto.RegisterRequest request) {
+            @RequestBody @Valid LoginDto request) {
 
         return ResponseEntity.ok(memberService.authenticate(request));
     }

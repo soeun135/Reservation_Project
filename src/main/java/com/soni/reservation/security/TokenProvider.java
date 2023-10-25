@@ -42,6 +42,9 @@ public class TokenProvider {
 
     //토큰이 유효한지 검증하는 메소드
     //만들기 전에 토큰으로부터 Claims 가져오는 메소드 먼저 구현
+    public String getRole(String token) {
+        return (String) this.parseClaims(token).get(KEY_ROLE);
+    }
     public String getMail(String token) {
         return this.parseClaims(token).getSubject();
     }

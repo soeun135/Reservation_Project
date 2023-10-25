@@ -1,7 +1,6 @@
 package com.soni.reservation.Controller;
 
 import com.soni.reservation.domain.Manager;
-import com.soni.reservation.dto.Login;
 import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.service.ManageService;

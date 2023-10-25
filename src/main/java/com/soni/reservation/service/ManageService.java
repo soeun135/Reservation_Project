@@ -1,7 +1,6 @@
 package com.soni.reservation.service;
 
 import com.soni.reservation.domain.Manager;
-import com.soni.reservation.dto.Login;
 import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.repository.ManagerRepository;
 import com.soni.reservation.security.TokenProvider;

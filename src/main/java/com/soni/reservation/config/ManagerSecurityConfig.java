@@ -1,10 +1,14 @@
 package com.soni.reservation.config;
 
 import com.soni.reservation.security.JwtAuthenticationFilter;
+import com.soni.reservation.service.ManageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -17,7 +21,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class ManagerSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final ManageService manageService;
     private final JwtAuthenticationFilter authenticationFilter;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -56,5 +62,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //ProviderManager에 우리가 만든 TokenProvider를 등록하는 방법은
         //WebSecurityConfigurerAdapter를 상속해 만든 SecurityConfig에서 가능. 근데 해주진 않은 듯?
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(manageService);
     }
 }

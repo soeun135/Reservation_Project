@@ -1,5 +1,6 @@
 package com.soni.reservation.service;
 
+import com.soni.reservation.domain.Reserve;
 import com.soni.reservation.dto.ReserveDto;
 import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.repository.MemberRepository;
@@ -25,6 +26,14 @@ public class ReserveService {
         if (reserveRepository.countByReservedAt(reserve.getReservedAt()) == 5) {
             throw new RuntimeException("해당 시간에 예약이 다 찼습니다.");
         }
+
+        Reserve save = reserveRepository.save(
+                Reserve.builder()
+                        .reservedAt(reserve.getReservedAt())
+                        .member(member)
+                        .store(store)
+                        .build()
+        );
 
         return ReserveDto.builder()
                 .storeName(reserve.getStoreName())
