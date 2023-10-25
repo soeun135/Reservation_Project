@@ -14,5 +14,5 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long> {
 
     Optional<Reserve> findByReserveNum(String reserveNum);
 
-    Optional<List<Reserve>> findByManagerIdAndStoreId(Long managerId, Long storeId);
+    Optional<List<Reserve>> findByStoreId(Long storeId);
 }

@@ -3,6 +3,8 @@ package com.soni.reservation.service;
 import com.soni.reservation.domain.Reserve;
 import com.soni.reservation.dto.ReserveDto;
 import com.soni.reservation.dto.StoreDto;
+import com.soni.reservation.exception.ReserveException;
+import com.soni.reservation.exception.UserException;
 import com.soni.reservation.repository.MemberRepository;
 import com.soni.reservation.repository.ReserveRepository;
 import com.soni.reservation.repository.StoreRepository;
@@ -10,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
+import static com.soni.reservation.type.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -20,13 +24,13 @@ public class ReserveService {
 
     public ReserveDto addReserve(Long memberId, ReserveDto reserve) {
         var member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("가입되지 않은 회원입니다."));
+                .orElseThrow(() -> new ReserveException(USER_NOT_FOUND));
 
         var store = storeRepository.findByStoreName(reserve.getStoreName())
-                .orElseThrow(() -> new RuntimeException("매장이 없습니다."));
+                .orElseThrow(() -> new ReserveException(STORE_NOT_FOUND));
 
         if (reserveRepository.countByReservedAt(reserve.getReservedAt()) == 5) {
-            throw new RuntimeException("해당 시간에 예약이 다 찼습니다.");
+            throw new ReserveException(RESERVE_IS_FULL);
         }
         String reserveNum = this.getReserveNum(memberId, reserve);
 
@@ -54,17 +58,21 @@ public class ReserveService {
 
     public void confirmReserve(String reserveNum) {
         Reserve reserve = reserveRepository.findByReserveNum(reserveNum)
-                .orElseThrow(() -> new RuntimeException("해당 예약이 존재하지 않습니다."));
+                .orElseThrow(() -> new ReserveException(RESERVE_NOT_FOUND));
 
-        validateTime(reserve.getReservedAt());
+        validate(reserve);
 
         reserve.setVisited(true);
         reserveRepository.save(reserve);
     }
 
-    private void validateTime(LocalDateTime reservedAt) {
-        if (LocalDateTime.now().compareTo(reservedAt.plusMinutes(10)) > 0) {
-            throw new RuntimeException("예약시간 10분 전에 도착하지 못해 예약이 취소되었습니다.");
+    private void validate(Reserve reserved) {
+        if (LocalDateTime.now().compareTo(reserved.getReservedAt().plusMinutes(10)) > 0) {
+            throw new ReserveException(RESERVE_CANCELED);
+        }
+
+        if (!reserved.getConfirm()) {
+            throw new ReserveException(RESERVE_NOT_ALLOWED);
         }
     }
 }

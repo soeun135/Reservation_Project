@@ -47,13 +47,12 @@ public class ManageController {
         return ResponseEntity.ok(manageService.searchStore(managerId));
     }
 
-    @GetMapping("/searchReserve/{managerId}/{storeId}")
+    @GetMapping("/searchReserve/{storeId}")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> searchReserve(
-            @PathVariable Long managerId,
             @PathVariable Long storeId
     ) {
-        return ResponseEntity.ok(manageService.searchReserve(managerId, storeId));
+        return ResponseEntity.ok(manageService.searchReserve(storeId));
     }
 
     @PatchMapping("/reserveConfirm/{reserveId}")

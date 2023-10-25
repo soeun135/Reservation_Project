@@ -4,11 +4,14 @@ import com.soni.reservation.domain.Manager;
 import com.soni.reservation.domain.Store;
 import com.soni.reservation.dto.ReserveDto;
 import com.soni.reservation.dto.StoreDto;
+import com.soni.reservation.exception.StoreException;
 import com.soni.reservation.repository.ManagerRepository;
 import com.soni.reservation.repository.MemberRepository;
 import com.soni.reservation.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import static com.soni.reservation.type.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,18 +39,18 @@ public class StoreService {
         boolean exists = managerRepository.existsById(managerId);
 
         if (!exists) {
-            throw new RuntimeException("존재하지 않는 점장입니다.");
+            throw new StoreException(MANAGER_NOT_FOUND);
         }
 
         int count = storeRepository.countByStoreName(store.getStoreName());
 
         if (count > 0) {
-            throw new RuntimeException("중복된 매장 명입니다.");
+            throw new StoreException(STORE_DUPLICATED);
         }
     }
 
     public Store searchStore(String storeName) {
         return storeRepository.findByStoreName(storeName)
-                .orElseThrow(() -> new RuntimeException("없는 매장입니다."));
+                .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
     }
 }
