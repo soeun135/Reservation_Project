@@ -17,7 +17,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("soeun.Reservation"))
+                .apis(RequestHandlerSelectors.basePackage("com.soni.reservation"))
 //basePackage("zerobase.weather")하면 error controller 없앨 수 있음.
                 .paths(PathSelectors.any())
 //paths 기준 swagger에 표시가 될 API 정할 수 있음.
