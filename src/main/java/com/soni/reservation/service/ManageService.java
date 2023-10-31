@@ -35,6 +35,7 @@ public class ManageService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
         return this.managerRepository.findByMail(mail)
+
                 .orElseThrow(RuntimeException::new);
     }
 
