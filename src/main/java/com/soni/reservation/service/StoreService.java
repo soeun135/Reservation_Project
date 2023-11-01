@@ -20,11 +20,11 @@ public class StoreService {
     /**
      * 매장 추가
      */
-    public StoreDto.StoreResponse addStore(StoreDto.AddStoreRequest store, Long managerId) {
+    public StoreDto.StoreResponse addStore(StoreDto.AddStoreRequest store, String mail) {
 
-        validation(store, managerId);
+        validation(store, mail);
 
-        Manager manager = managerRepository.findById(managerId).get();
+        Manager manager = managerRepository.findByMail(mail).get();
 
         Store storeEntity = store.toEntity();
         storeEntity.setManager(manager);
@@ -39,12 +39,9 @@ public class StoreService {
     /**
      * 매장 추가시 유효한지 검증
      */
-    private void validation(StoreDto.AddStoreRequest store, Long managerId) {
-        boolean exists = managerRepository.existsById(managerId);
-
-        if (!exists) {
-            throw new StoreException(MANAGER_NOT_FOUND);
-        }
+    private void validation(StoreDto.AddStoreRequest store, String mail) {
+        managerRepository.findByMail(mail)
+                .orElseThrow(() -> new StoreException(MANAGER_NOT_FOUND));
 
         int count = storeRepository.countByStoreName(store.getStoreName());
 

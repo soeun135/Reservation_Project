@@ -1,30 +1,19 @@
 package com.soni.reservation.Controller;
 
-import com.soni.reservation.dto.ReserveDto;
 import com.soni.reservation.service.ReserveService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/reserve")
+@RequestMapping("/kiosk")
 @RequiredArgsConstructor
-public class ReserveController {
+public class KioskController {
     private final ReserveService reserveService;
 
-    /**
-     * 매장 예약
-     */
-    @PostMapping("/{memberId}")
-    @PreAuthorize("hasRole('MEMBER')")
-    public ResponseEntity<?> addReserve(
-            @PathVariable Long memberId,
-            @RequestBody ReserveDto request) {
-
-        return ResponseEntity.ok(reserveService.addReserve(memberId, request));
-
-    }
 
     /**
      * 키오스크에서 방문 확인

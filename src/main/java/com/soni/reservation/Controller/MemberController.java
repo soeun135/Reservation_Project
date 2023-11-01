@@ -3,13 +3,15 @@ package com.soni.reservation.Controller;
 import com.soni.reservation.domain.Member;
 import com.soni.reservation.dto.LoginDto;
 import com.soni.reservation.dto.MemberDto;
+import com.soni.reservation.dto.ReserveDto;
+import com.soni.reservation.dto.ReviewDto;
 import com.soni.reservation.service.MemberService;
+import com.soni.reservation.service.ReserveService;
+import com.soni.reservation.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -18,6 +20,8 @@ import javax.validation.Valid;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final ReserveService reserveService;
+    private final ReviewService reviewService;
 
     /**
      * 이용자 회원가입
@@ -37,5 +41,30 @@ public class MemberController {
             @RequestBody @Valid LoginDto request) {
 
         return ResponseEntity.ok(memberService.authenticate(request));
+    }
+
+    /**
+     * 매장 예약
+     */
+    @PostMapping("/{memberId}")
+    @PreAuthorize("hasRole('MEMBER')")
+    public ResponseEntity<?> addReserve(
+            @PathVariable Long memberId,
+            @RequestBody ReserveDto request) {
+
+        return ResponseEntity.ok(reserveService.addReserve(memberId, request));
+
+    }
+
+    /**
+     * 리뷰작성
+     */
+    @PostMapping("/{reserveNum}")
+    @PreAuthorize("hasRole('MEMBER')")
+    public ResponseEntity<?> addReview(
+            @RequestBody ReviewDto.Request request,
+            @PathVariable String reserveNum
+    ) {
+        return ResponseEntity.ok(reviewService.addReview(request, reserveNum));
     }
 }

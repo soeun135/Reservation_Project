@@ -3,11 +3,13 @@ package com.soni.reservation.Controller;
 import com.soni.reservation.domain.Manager;
 import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.dto.StoreDto;
+import com.soni.reservation.security.TokenProvider;
 import com.soni.reservation.service.ManageService;
 import com.soni.reservation.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +20,7 @@ import javax.validation.Valid;
 public class ManageController {
     private final ManageService manageService;
     private final StoreService storeService;
+    private final TokenProvider tokenProvider;
 
     /**
      * 점장 회원가입
@@ -39,11 +42,16 @@ public class ManageController {
     /**
      * 매장 등록
      */
-    @PostMapping("/store/{managerId}")
+    @PostMapping("/store/add")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> addStore(@RequestBody @Valid StoreDto.AddStoreRequest store,
-                                      @PathVariable Long managerId) {
-        return ResponseEntity.ok(storeService.addStore(store, managerId));
+                                      @RequestHeader("Authorization") String token) {
+        System.out.println(token);
+        if (!ObjectUtils.isEmpty(token) && token.startsWith("Bearer")) {
+            token =  token.substring("Bearer".length());
+        }
+        String mail = tokenProvider.getMail(token);
+        return ResponseEntity.ok(storeService.addStore(store, mail));
     }
 
     @GetMapping("/searchStore/{managerId}")
@@ -62,7 +70,7 @@ public class ManageController {
         return ResponseEntity.ok(manageService.searchReserve(storeId));
     }
 
-    @PatchMapping("/reserveConfirm/{reserveId}")
+    @PatchMapping("/reserve/confirm/{reserveId}")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> confirmReserve(
             @PathVariable Long reserveId
