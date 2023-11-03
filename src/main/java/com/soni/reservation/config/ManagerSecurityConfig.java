@@ -1,7 +1,7 @@
 package com.soni.reservation.config;
 
 import com.soni.reservation.security.JwtAuthenticationFilter;
-import com.soni.reservation.service.ManageService;
+import com.soni.reservation.service.ManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ManagerSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final ManageService manageService;
+    private final ManagerService manageService;
     private final JwtAuthenticationFilter authenticationFilter;
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -30,7 +30,7 @@ import static com.soni.reservation.type.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
-public class ManageService implements UserDetailsService {
+public class ManagerService implements UserDetailsService {
     private final ManagerRepository managerRepository;
     private final StoreRepository storeRepository;
     private final ReserveRepository reserveRepository;

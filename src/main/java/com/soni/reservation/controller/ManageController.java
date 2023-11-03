@@ -5,7 +5,7 @@ import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.dto.ReserveConfirm;
 import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.security.TokenProvider;
-import com.soni.reservation.service.ManageService;
+import com.soni.reservation.service.ManagerService;
 import com.soni.reservation.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @RequestMapping("/manager")
 @RequiredArgsConstructor
 public class ManageController {
-    private final ManageService manageService;
+    private final ManagerService manageService;
     private final StoreService storeService;
     private final TokenProvider tokenProvider;
 
