@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ReserveConfirm {
-    public boolean confirmYn;
+    private Long reserveId;
+    private Long storeId;
+    private boolean confirmYn;
 }

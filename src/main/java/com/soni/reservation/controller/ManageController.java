@@ -75,13 +75,14 @@ public class ManageController {
     /**
      * 예약 승인/거절
      */
-    @PatchMapping("/reserve/confirm/{reserveId}")
+    @PatchMapping("/reserve/confirm")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> confirmReserve(
-            @PathVariable Long reserveId,
+            @RequestHeader("Authorization") String token,
             @RequestBody ReserveConfirm reserveConfirm
     ) {
-        manageService.confirmReserve(reserveId, reserveConfirm);
-        return ResponseEntity.ok(reserveId + " 예약을 승인했습니다.");
+        manageService.confirmReserve(reserveConfirm);
+        return ResponseEntity.ok(manageService.confirmReserve(reserveConfirm)
+                + " 예약을 승인했습니다.");
     }
 }

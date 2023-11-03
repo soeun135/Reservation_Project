@@ -157,11 +157,23 @@ public class ManageService implements UserDetailsService {
     /**
      * 예약 승인/거절
      */
-    public void confirmReserve(Long reserveId, ReserveConfirm reserveConfirm) {
-        Reserve reserve = reserveRepository.findById(reserveId)
+    public Long confirmReserve(ReserveConfirm reserveConfirm) {
+        //매장 존재 확인
+        Store store = storeRepository.findById(reserveConfirm.getStoreId())
+                .orElseThrow(() -> new ManagerException(STORE_NOT_FOUND));
+
+        //예약 존재 확인
+        Reserve reserve = reserveRepository.findById(reserveConfirm.getReserveId())
                 .orElseThrow(() -> new ManagerException(RESERVE_NOT_FOUND));
+
+        //해당 매장의 예약인지 확인
+        if (store.getId() != reserve.getStore().getId()) {
+            throw new ManagerException(UNMATCHED_STORE_RESERVE);
+        }
 
         reserve.setConfirm(reserveConfirm.isConfirmYn());
         reserveRepository.save(reserve);
+
+        return reserveConfirm.getReserveId();
     }
 }

@@ -12,34 +12,34 @@ import static com.soni.reservation.type.ErrorCode.INTERNAL_SERVER_ERROR;
 public class GlobalExceptionHandler {
     @ExceptionHandler(UserException.class)
     public ErrorResponse handleUserException(UserException e) {
-        log.error("{} is occurred", e.getErrorCode() + " UserException");
+        log.error("{} is occurred from {}", e.getErrorCode(), e.getClass());
 
         return new ErrorResponse(e.getErrorCode(), e.getErrorMessage());
     }
     @ExceptionHandler(ManagerException.class)
     public ErrorResponse handleManagerException(ManagerException e) {
-        log.error("{} is occurred", e.getErrorCode());
+        log.error("{} is occurred from {}", e.getErrorCode(), e.getClass());
 
         return new ErrorResponse(e.getErrorCode(), e.getErrorMessage());
     }
 
     @ExceptionHandler(ReserveException.class)
     public ErrorResponse handleReserveException(ReserveException e) {
-        log.error("{} is occurred", e.getErrorCode());
+        log.error("{} is occurred from {}", e.getErrorCode(), e.getClass());
 
         return new ErrorResponse(e.getErrorCode(), e.getErrorMessage());
     }
 
     @ExceptionHandler(ReviewException.class)
     public ErrorResponse handleReviewException(ReviewException e) {
-        log.error("{} is occurred", e.getErrorCode());
+        log.error("{} is occurred from {}", e.getErrorCode(), e.getClass());
 
         return new ErrorResponse(e.getErrorCode(), e.getErrorMessage());
     }
 
     @ExceptionHandler(StoreException.class)
     public ErrorResponse handleStoreException(StoreException e) {
-        log.error("{} is occurred", e.getErrorCode());
+        log.error("{} is occurred from {}", e.getErrorCode(), e.getClass());
 
         return new ErrorResponse(e.getErrorCode(), e.getErrorMessage());
     }
