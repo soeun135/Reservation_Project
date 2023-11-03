@@ -59,7 +59,7 @@ public class ManagerController {
     /**
      * 매장에 등록된 예약확인
      */
-    @GetMapping("/searchReserve/{storeId}")
+    @GetMapping("/reserve/search/{storeId}")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> searchReserve(
             @PathVariable Long storeId,
@@ -77,8 +77,7 @@ public class ManagerController {
             @RequestHeader("Authorization") String token,
             @RequestBody ReserveConfirm reserveConfirm
     ) {
-        manageService.confirmReserve(reserveConfirm);
-        return ResponseEntity.ok(manageService.confirmReserve(reserveConfirm)
-                + " 예약을 승인했습니다.");
+        return ResponseEntity.ok(manageService.confirmReserve(reserveConfirm, token)
+                + "예약을" + reserveConfirm.isConfirmYn() + "하였습니다.");
     }
 }
