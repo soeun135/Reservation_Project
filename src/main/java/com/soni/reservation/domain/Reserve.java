@@ -28,9 +28,9 @@ public class Reserve {
 
     private LocalDateTime reservedAt;
 
-    private Boolean visited;
+    private boolean visited;
 
-    private Boolean confirm;
+    private boolean confirm;
 
     @JsonIgnore
     @ManyToOne
