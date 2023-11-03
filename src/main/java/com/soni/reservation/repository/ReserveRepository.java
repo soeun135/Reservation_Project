@@ -1,6 +1,7 @@
 package com.soni.reservation.repository;
 
 import com.soni.reservation.domain.Reserve;
+import com.soni.reservation.domain.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,6 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long> {
     Optional<Reserve> findByReserveNum(String reserveNum);
 
     Optional<List<Reserve>> findByStoreId(Long storeId);
+
+   Optional<List<Reserve>> findByStore(Store store);
 }
