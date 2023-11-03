@@ -1,5 +1,6 @@
 package com.soni.reservation.repository;
 
+import com.soni.reservation.domain.Manager;
 import com.soni.reservation.domain.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByStoreName(String storeName);
 
     Optional<List<Store>> findByManagerId(Long id);
+
+    List<Store> findByManager(Manager manager);
 }

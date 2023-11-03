@@ -1,4 +1,4 @@
-package com.soni.reservation.Controller;
+package com.soni.reservation.controller;
 
 import com.soni.reservation.domain.Store;
 import com.soni.reservation.service.StoreService;

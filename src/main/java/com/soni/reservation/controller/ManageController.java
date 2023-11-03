@@ -1,7 +1,8 @@
-package com.soni.reservation.Controller;
+package com.soni.reservation.controller;
 
 import com.soni.reservation.domain.Manager;
 import com.soni.reservation.dto.ManagerDto;
+import com.soni.reservation.dto.ReserveConfirm;
 import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.security.TokenProvider;
 import com.soni.reservation.service.ManageService;
@@ -9,7 +10,6 @@ import com.soni.reservation.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,36 +46,42 @@ public class ManageController {
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> addStore(@RequestBody @Valid StoreDto.AddStoreRequest store,
                                       @RequestHeader("Authorization") String token) {
-        System.out.println(token);
-        if (!ObjectUtils.isEmpty(token) && token.startsWith("Bearer")) {
-            token =  token.substring("Bearer".length());
-        }
-        String mail = tokenProvider.getMail(token);
-        return ResponseEntity.ok(storeService.addStore(store, mail));
+
+        return ResponseEntity.ok(manageService.addStore(store, token));
     }
 
-    @GetMapping("/searchStore/{managerId}")
+    /**
+     * 내 매장 찾기
+     */
+    @GetMapping("/store/search")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<?> searchStore(
-            @PathVariable Long managerId
+    public ResponseEntity<?> searchStore(@RequestHeader("Authorization") String token
     ) {
-        return ResponseEntity.ok(manageService.searchStore(managerId));
+        return ResponseEntity.ok(manageService.searchStore(token));
     }
 
+    /**
+     * 매장에 등록된 예약확인
+     */
     @GetMapping("/searchReserve/{storeId}")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> searchReserve(
-            @PathVariable Long storeId
+            @PathVariable Long storeId,
+            @RequestHeader("Authorization") String token
     ) {
-        return ResponseEntity.ok(manageService.searchReserve(storeId));
+        return ResponseEntity.ok(manageService.searchReserve(storeId, token));
     }
 
+    /**
+     * 예약 승인/거절
+     */
     @PatchMapping("/reserve/confirm/{reserveId}")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> confirmReserve(
-            @PathVariable Long reserveId
+            @PathVariable Long reserveId,
+            @RequestBody ReserveConfirm reserveConfirm
     ) {
-        manageService.confirmReserve(reserveId);
+        manageService.confirmReserve(reserveId, reserveConfirm);
         return ResponseEntity.ok(reserveId + " 예약을 승인했습니다.");
     }
 }

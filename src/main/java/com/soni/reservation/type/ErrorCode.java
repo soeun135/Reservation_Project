@@ -11,6 +11,7 @@ public enum ErrorCode {
     USER_NOT_FOUND("해당 아이디에 해당하는 회원이 없습니다."),
     PASSWORD_UNMATCHED("비밀번호가 일치하지 않습니다."),
     MANAGER_NOT_FOUND("해당 점장이 없습니다."),
+    UNMATCHED_MANAGER_STORE("자신의 매장만 조회할 수 있습니다."),
     STORE_NOT_FOUND("해당 매장이 없습니다."),
     STORE_DUPLICATED("중복된 매장 명입니다."),
     RESERVE_IS_FULL("해당 시간에 예약이 다 찼습니다."),

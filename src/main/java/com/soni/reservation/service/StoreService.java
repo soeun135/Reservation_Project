@@ -1,6 +1,5 @@
 package com.soni.reservation.service;
 
-import com.soni.reservation.domain.Manager;
 import com.soni.reservation.domain.Store;
 import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.exception.StoreException;
@@ -17,38 +16,6 @@ public class StoreService {
     private final ManagerRepository managerRepository;
     private final StoreRepository storeRepository;
 
-    /**
-     * 매장 추가
-     */
-    public StoreDto.StoreResponse addStore(StoreDto.AddStoreRequest store, String mail) {
-
-        validation(store, mail);
-
-        Manager manager = managerRepository.findByMail(mail).get();
-
-        Store storeEntity = store.toEntity();
-        storeEntity.setManager(manager);
-
-        var result = storeRepository.save(storeEntity);
-        return StoreDto.StoreResponse.builder()
-                .storeName(result.getStoreName())
-                .createdAt(result.getCreatedAt())
-                .build();
-    }
-
-    /**
-     * 매장 추가시 유효한지 검증
-     */
-    private void validation(StoreDto.AddStoreRequest store, String mail) {
-        managerRepository.findByMail(mail)
-                .orElseThrow(() -> new StoreException(MANAGER_NOT_FOUND));
-
-        int count = storeRepository.countByStoreName(store.getStoreName());
-
-        if (count > 0) {
-            throw new StoreException(STORE_DUPLICATED);
-        }
-    }
 
     /**
      * 매장 검색
