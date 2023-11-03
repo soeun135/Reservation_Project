@@ -157,7 +157,7 @@ public class ManagerService implements UserDetailsService {
     /**
      * 예약 승인/거절
      */
-    public Long confirmReserve(ReserveConfirm reserveConfirm) {
+    public Long confirmReserve(ReserveConfirm reserveConfirm, String token) {
         //매장 존재 확인
         Store store = storeRepository.findById(reserveConfirm.getStoreId())
                 .orElseThrow(() -> new ManagerException(STORE_NOT_FOUND));
@@ -167,10 +167,15 @@ public class ManagerService implements UserDetailsService {
                 .orElseThrow(() -> new ManagerException(RESERVE_NOT_FOUND));
 
         //해당 매장의 예약인지 확인
-        if (store.getId() != reserve.getStore().getId()) {
+        if (!Objects.equals(store.getId(), reserve.getStore().getId())) {
             throw new ManagerException(UNMATCHED_STORE_RESERVE);
         }
+        Manager manager = this.getManagerEntity(token);
 
+        //해당 점장의 매장에서 일어난 예약인지 확인
+        if (!Objects.equals(reserve.getStore().getManager(), manager)) {
+            throw new ManagerException(UNMATCHED_RESERVE_MANAGER);
+        }
         reserve.setConfirm(reserveConfirm.isConfirmYn());
         reserveRepository.save(reserve);
 
