@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.soni.reservation.type.ErrorCode.*;
@@ -94,7 +96,18 @@ public class MemberService implements UserDetailsService {
             throw new UserException(RESERVE_IS_FULL);
         }
 
-        String reserveNum = this.getReserveNum(member.getId(), reserve.getReservedAt());
+        //해당 회원 예약 중에 같은 매장에 예약한 게 있고 방문이 되지 않았으면 안 됨
+        Optional<List<Reserve>> reserveStore = reserveRepository.findByStore(store);
+        if (reserveStore.isPresent() && reserveStore.get().size() > 0) {
+            List<Reserve> reserveList = reserveStore.get();
+            reserveList.stream().forEach(item -> {
+                if (Objects.equals(item.getStore().getId(), store.getId()) &&  !item.isVisited()) {
+                    throw new UserException(RESERVE_DUPLICATED);
+                }
+            });
+        }
+
+        String reserveNum = this.getReserveNum(member.getId(), reserve.getReservedAt(), store.getId());
 
         reserveRepository.save(
                 Reserve.builder()
@@ -139,11 +152,12 @@ public class MemberService implements UserDetailsService {
     /**
      * 예약번호 발급
      */
-    private String getReserveNum(Long memberId, LocalDateTime reservedAt) {
+    private String getReserveNum(Long memberId, LocalDateTime reservedAt, Long storeId) {
         return memberId +
                 Integer.toString(reservedAt.getYear()) +
                 reservedAt.getMonth() +
-                reservedAt.getDayOfMonth();
+                reservedAt.getDayOfMonth() +
+                storeId;
     }
 
     /**
@@ -157,7 +171,7 @@ public class MemberService implements UserDetailsService {
         Reserve reserve = reserveRepository.findByReserveNum(review.getReserveNum())
                 .orElseThrow(() -> new UserException(RESERVE_NOT_FOUND));
         //해당 예약건에 예약한 사람이 맞는지 확인
-        if (member.getId() != reserve.getMember().getId()) {
+        if (!Objects.equals(member.getId(), reserve.getMember().getId())) {
             throw new UserException(UNMATCHED_MEMBER_RESERVE);
         }
         //방문 여부가 true인지 확인
@@ -181,7 +195,7 @@ public class MemberService implements UserDetailsService {
      * 리뷰 작성하기 위해 방문했는지 확인
      */
     private void validateVisited(Reserve reserve) {
-        if (!reserve.getVisited()) {
+        if (!reserve.isVisited()) {
             throw new UserException(REVIEW_NOT_ALLOWED);
         }
     }
