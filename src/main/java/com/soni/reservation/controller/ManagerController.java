@@ -78,6 +78,6 @@ public class ManagerController {
             @RequestBody ReserveConfirm reserveConfirm
     ) {
         return ResponseEntity.ok(manageService.confirmReserve(reserveConfirm, token)
-                + "예약을" + reserveConfirm.isConfirmYn() + "하였습니다.");
+                + "번 예약을 " + reserveConfirm.isConfirmYn() + " 상태로 변경하였습니다.");
     }
 }
