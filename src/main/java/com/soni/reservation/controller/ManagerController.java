@@ -4,9 +4,7 @@ import com.soni.reservation.domain.Manager;
 import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.dto.ReserveConfirm;
 import com.soni.reservation.dto.StoreDto;
-import com.soni.reservation.security.TokenProvider;
 import com.soni.reservation.service.ManagerService;
-import com.soni.reservation.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,10 +15,8 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/manager")
 @RequiredArgsConstructor
-public class ManageController {
+public class ManagerController {
     private final ManagerService manageService;
-    private final StoreService storeService;
-    private final TokenProvider tokenProvider;
 
     /**
      * 점장 회원가입

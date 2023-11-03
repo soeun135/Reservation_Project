@@ -84,7 +84,7 @@ public class ManagerService implements UserDetailsService {
      */
     public StoreDto.StoreResponse addStore(StoreDto.AddStoreRequest store, String token) {
 
-        Manager manager = getManager(token);
+        Manager manager = getManagerEntity(token);
 
         int count = storeRepository.countByStoreName(store.getStoreName());
         if (count > 0) {
@@ -102,9 +102,9 @@ public class ManagerService implements UserDetailsService {
     }
 
     /**
-     * 토큰에서 해당 점장 Entity를 꺼내오는 메소드
+     * email로 해당 점장 Entity를 찾는 메소드
      */
-    private Manager getManager(String token) {
+    private Manager getManagerEntity(String token) {
         String mail = getMailFromToken(token);
 
         Optional<Manager> optionalManager = managerRepository.findByMail(mail);
@@ -130,7 +130,7 @@ public class ManagerService implements UserDetailsService {
      * 해당 점장 기준 등록된 매장 확인
      */
     public List<Store> searchStore(String token) {
-        Manager manager = getManager(token);
+        Manager manager = getManagerEntity(token);
         List<Store> storeList = storeRepository.findByManager(manager);
 
         return storeList;
@@ -140,7 +140,7 @@ public class ManagerService implements UserDetailsService {
      * 해당 매장 기준 등록된 예약 확인
      */
     public List<Reserve> searchReserve(Long storeId, String token) {
-        Manager manager = getManager(token);
+        Manager manager = getManagerEntity(token);
 
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new ManagerException(STORE_NOT_FOUND));

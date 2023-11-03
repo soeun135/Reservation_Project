@@ -10,6 +10,7 @@ public class ReviewDto {
     @Setter
     @Builder
     public static class Request{
+        private String reserveNum;
         private String text;
     }
 
