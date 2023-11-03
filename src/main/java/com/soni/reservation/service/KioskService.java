@@ -12,7 +12,7 @@ import static com.soni.reservation.type.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
-public class ReserveService {
+public class KioskService {
     private final ReserveRepository reserveRepository;
 
     /**
@@ -32,11 +32,11 @@ public class ReserveService {
      * 예약 방문 확인 시 유효한지 확인
      */
     private void validate(Reserve reserved) {
-        if (LocalDateTime.now().compareTo(reserved.getReservedAt().plusMinutes(10)) > 0) {
+        if (LocalDateTime.now().isAfter(reserved.getReservedAt().plusMinutes(10))) {
             throw new ReserveException(RESERVE_CANCELED);
         }
 
-        if (!reserved.getConfirm()) {
+        if (!reserved.isConfirm()) {
             throw new ReserveException(RESERVE_NOT_ALLOWED);
         }
     }

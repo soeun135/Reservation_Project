@@ -1,10 +1,10 @@
 package com.soni.reservation.controller;
 
-import com.soni.reservation.service.ReserveService;
+import com.soni.reservation.service.KioskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/kiosk")
 @RequiredArgsConstructor
 public class KioskController {
-    private final ReserveService reserveService;
+    private final KioskService reserveService;
 
 
     /**
      * 키오스크에서 방문 확인
      */
-    @PostMapping("/confirm/{reserveNum}")
+    @PatchMapping("/confirm/{reserveNum}")
     public ResponseEntity<?> confirmReserve(
             @PathVariable String reserveNum
     ) {
