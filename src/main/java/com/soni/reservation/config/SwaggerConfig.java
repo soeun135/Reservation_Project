@@ -30,7 +30,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("예약 서비스 구현 프로젝트")
-                .description("예약을 하고 승인 거절하는 API 입니다.")
+                .description("점장이 등록한 매장에 대해 가입한 회원이 예약을 할 수 있는 API 입니다.")
                 .version("20.0")
                 .build();
     }

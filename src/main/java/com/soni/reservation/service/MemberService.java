@@ -1,6 +1,5 @@
 package com.soni.reservation.service;
 
-import com.soni.reservation.dto.LoginDto;
 import com.soni.reservation.dto.MemberDto;
 import com.soni.reservation.dto.ReserveDto;
 import com.soni.reservation.dto.ReviewDto;
@@ -20,7 +19,7 @@ public interface MemberService {
      *             : 비밀번호 일치하지 않을 경우 UserException 발생
      * - 일치할 경우 TokenProvider에서 토큰 만들어서 반환.
      */
-    String authenticate(LoginDto member);
+    String authenticate(MemberDto.LoginRequest member);
 
     /**
      * 매장 예약

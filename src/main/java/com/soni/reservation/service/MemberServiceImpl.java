@@ -3,7 +3,6 @@ package com.soni.reservation.service;
 import com.soni.reservation.domain.Member;
 import com.soni.reservation.domain.Reserve;
 import com.soni.reservation.domain.Review;
-import com.soni.reservation.dto.LoginDto;
 import com.soni.reservation.dto.MemberDto;
 import com.soni.reservation.dto.ReserveDto;
 import com.soni.reservation.dto.ReviewDto;
@@ -70,7 +69,7 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
     /**
      * 로그인 유효한지 확인
      */
-    public String authenticate(LoginDto member) {
+    public String authenticate(MemberDto.LoginRequest member) {
         var user = memberRepository.findByMail(member.getMail())
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));
 

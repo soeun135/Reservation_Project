@@ -18,14 +18,15 @@ public class KioskServiceImpl implements KioskService{
     /**
      * 예약 방문 확인
      */
-    public void confirmReserve(String reserveNum) {
+    public String confirmReserve(String reserveNum) {
         Reserve reserve = reserveRepository.findByReserveNum(reserveNum)
                 .orElseThrow(() -> new ReserveException(RESERVE_NOT_FOUND));
 
         validate(reserve);
 
         reserve.setVisited(true);
-        reserveRepository.save(reserve);
+        Reserve save = reserveRepository.save(reserve);
+        return save.getReserveNum() + " 방문확인 되었습니다.";
     }
 
     /**
