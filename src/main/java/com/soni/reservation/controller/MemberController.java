@@ -5,7 +5,7 @@ import com.soni.reservation.dto.LoginDto;
 import com.soni.reservation.dto.MemberDto;
 import com.soni.reservation.dto.ReserveDto;
 import com.soni.reservation.dto.ReviewDto;
-import com.soni.reservation.service.MemberService;
+import com.soni.reservation.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +17,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
-    private final MemberService memberService;
+    private final MemberServiceImpl memberService;
 
     /**
      * 이용자 회원가입

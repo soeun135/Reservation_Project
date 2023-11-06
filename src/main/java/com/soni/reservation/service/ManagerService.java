@@ -6,179 +6,55 @@ import com.soni.reservation.domain.Store;
 import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.dto.ReserveConfirm;
 import com.soni.reservation.dto.StoreDto;
-import com.soni.reservation.exception.ManagerException;
-import com.soni.reservation.exception.StoreException;
-import com.soni.reservation.exception.UserException;
-import com.soni.reservation.repository.ManagerRepository;
-import com.soni.reservation.repository.ReserveRepository;
-import com.soni.reservation.repository.StoreRepository;
-import com.soni.reservation.security.TokenProvider;
-import com.soni.reservation.type.Authority;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
-import static com.soni.reservation.type.ErrorCode.*;
-
-@Service
-@RequiredArgsConstructor
-public class ManagerService implements UserDetailsService {
-    private final ManagerRepository managerRepository;
-    private final StoreRepository storeRepository;
-    private final ReserveRepository reserveRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenProvider tokenProvider;
-
-
-    @Override
-    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-        return this.managerRepository.findByMail(mail)
-
-                .orElseThrow(RuntimeException::new);
-    }
-
+public interface ManagerService {
     /**
      * 점장 회원가입
+     * - 유효성 검증 : 중복된 이메일일 경우 UserException 발생
+     * - Role : ROLE_MANAGER로 set.
+     * - 비밀번호 : PasswordEncoder.encode이용 암호화해서 저장.
      */
-    public Manager register(ManagerDto.RegisterRequest manager) {
-        validate(manager);
-
-        manager.setRole(String.valueOf(Authority.ROLE_MANAGER));
-        manager.setPassword(this.passwordEncoder.encode(manager.getPassword()));
-        return this.managerRepository.save(manager.toEntity());
-    }
-
-    /**
-     * 회원가입 유효한지 확인
-     */
-    private void validate(ManagerDto.RegisterRequest manager) {
-        boolean exists = this.managerRepository.existsByMail(manager.getMail());
-        if (exists) {
-            throw new UserException(USER_DUPLICATED);
-        }
-    }
+    Manager register(ManagerDto.RegisterRequest manager);
 
     /**
      * 로그인 유효한지 확인
+     * - 유효성 검증 : Manager 테이블에 없을 경우 ManagerException 발생
+     *             : 비밀번호 일치하지 않을 경우 ManagerException 발생
+     * - 일치할 경우 TokenProvider에서 토큰 만들어서 반환.
      */
-    public String authenticate(ManagerDto.LoginRequest manager) {
-        var user = this.managerRepository.findByMail(manager.getMail())
-                .orElseThrow(() -> new UserException(USER_NOT_FOUND));
-
-        if (!this.passwordEncoder.matches(manager.getPassword(), user.getPassword())) {
-            throw new UserException(PASSWORD_UNMATCHED);
-        }
-        return this.tokenProvider.generateToken(user.getMail(), user.getRole());
-    }
+    String authenticate(ManagerDto.LoginRequest manager);
 
     /**
      * 매장 추가
+     * - private 메소드 getManagerEntity를 이용해서 토큰 값에서 manager entity를 받아옴.
+     * - 유효성 검증 : 같은 이름의 매장이 1개 이상이면 StoreException 발생.
+     * - store entity에 user를 세팅하고 저장.
      */
-    public StoreDto.StoreResponse addStore(StoreDto.AddStoreRequest store, String token) {
-
-        Manager manager = getManagerEntity(token);
-
-        int count = storeRepository.countByStoreName(store.getStoreName());
-        if (count > 0) {
-            throw new StoreException(STORE_DUPLICATED);
-        }
-
-        Store storeEntity = store.toEntity();
-        storeEntity.setManager(manager);
-
-        var result = storeRepository.save(storeEntity);
-        return StoreDto.StoreResponse.builder()
-                .storeName(result.getStoreName())
-                .createdAt(result.getCreatedAt())
-                .build();
-    }
-
-    /**
-     * email로 해당 점장 Entity를 찾는 메소드
-     */
-    private Manager getManagerEntity(String token) {
-        String mail = getMailFromToken(token);
-
-        Optional<Manager> optionalManager = managerRepository.findByMail(mail);
-        if (optionalManager.isEmpty()) {
-            throw new ManagerException(MANAGER_NOT_FOUND);
-        }
-
-        return optionalManager.get();
-    }
-
-    /**
-     * 토큰에서 email 꺼내오는 메소드
-     */
-
-    private String getMailFromToken(String token) {
-        if (!ObjectUtils.isEmpty(token) && token.startsWith("Bearer")) {
-            token =  token.substring("Bearer".length());
-        }
-        return tokenProvider.getMail(token);
-    }
+    StoreDto.StoreResponse addStore(StoreDto.AddStoreRequest store, String token);
 
     /**
      * 해당 점장 기준 등록된 매장 확인
+     * - 점장을 기준으로 해당 점장이 등록한 매장 정보 확인 메소드
      */
-    public List<Store> searchStore(String token) {
-        Manager manager = getManagerEntity(token);
-        List<Store> storeList = storeRepository.findByManager(manager);
-
-        return storeList;
-    }
+    List<Store> searchStore(String token);
 
     /**
      * 해당 매장 기준 등록된 예약 확인
+     * - 매장을 기준으로 해당 매장에 등록된 예약 정보 확인 메소드
+     * - 유효성 검증 : 해당 매장이 없을 경우 ManagerException 발생.
+     *    : 예약을 확인하려는 manager와 매장 정보에 등록된 manager가 다를 경우 ManagerException 발생.
+     *    : 예약 정보가 없는 경우 ManagerException 발생.
      */
-    public List<Reserve> searchReserve(Long storeId, String token) {
-        Manager manager = getManagerEntity(token);
-
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new ManagerException(STORE_NOT_FOUND));
-
-
-        if (!Objects.equals(manager.getId(), store.getManager().getId())) {
-            throw new ManagerException(UNMATCHED_MANAGER_STORE);
-        }
-
-        return reserveRepository.findByStoreId(storeId)
-                .orElseThrow(() -> new ManagerException(RESERVE_NOT_FOUND));
-    }
+    List<Reserve> searchReserve(Long storeId, String token);
 
     /**
      * 예약 승인/거절
+     * - 유효성 검증 : 매장이 없으면 예외 발생
+     *             : 예약이 없으면 예외 발생
+     *             : 해당 매장의 예약이 아니면 예외 발생
+     *             : 등록하려는 사람의 매장에서 발생한 예약인지 확인
      */
-    public Long confirmReserve(ReserveConfirm reserveConfirm, String token) {
-        //매장 존재 확인
-        Store store = storeRepository.findById(reserveConfirm.getStoreId())
-                .orElseThrow(() -> new ManagerException(STORE_NOT_FOUND));
-
-        //예약 존재 확인
-        Reserve reserve = reserveRepository.findById(reserveConfirm.getReserveId())
-                .orElseThrow(() -> new ManagerException(RESERVE_NOT_FOUND));
-
-        //해당 매장의 예약인지 확인
-        if (!Objects.equals(store.getId(), reserve.getStore().getId())) {
-            throw new ManagerException(UNMATCHED_STORE_RESERVE);
-        }
-        Manager manager = this.getManagerEntity(token);
-
-        //해당 점장의 매장에서 일어난 예약인지 확인
-        if (!Objects.equals(reserve.getStore().getManager(), manager)) {
-            throw new ManagerException(UNMATCHED_RESERVE_MANAGER);
-        }
-        reserve.setConfirm(reserveConfirm.isConfirmYn());
-        reserveRepository.save(reserve);
-
-        return reserveConfirm.getReserveId();
-    }
+    Long confirmReserve(ReserveConfirm reserveConfirm, String token);
 }

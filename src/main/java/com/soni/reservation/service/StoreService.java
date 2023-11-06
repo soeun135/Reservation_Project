@@ -1,27 +1,12 @@
 package com.soni.reservation.service;
 
 import com.soni.reservation.domain.Store;
-import com.soni.reservation.dto.StoreDto;
-import com.soni.reservation.exception.StoreException;
-import com.soni.reservation.repository.ManagerRepository;
-import com.soni.reservation.repository.StoreRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import static com.soni.reservation.type.ErrorCode.*;
-
-@Service
-@RequiredArgsConstructor
-public class StoreService {
-    private final ManagerRepository managerRepository;
-    private final StoreRepository storeRepository;
-
+public interface StoreService {
 
     /**
      * 매장 검색
+     * - 유효성 검증 : 해당 매장이름으로 저장된 매장 없을 시 StoreException 발생
      */
-    public Store searchStore(String storeName) {
-        return storeRepository.findByStoreName(storeName)
-                .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
-    }
+    Store searchStore(String storeName);
 }

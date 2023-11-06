@@ -4,7 +4,7 @@ import com.soni.reservation.domain.Manager;
 import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.dto.ReserveConfirm;
 import com.soni.reservation.dto.StoreDto;
-import com.soni.reservation.service.ManagerService;
+import com.soni.reservation.service.ManagerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RequestMapping("/manager")
 @RequiredArgsConstructor
 public class ManagerController {
-    private final ManagerService manageService;
+    private final ManagerServiceImpl manageService;
 
     /**
      * 점장 회원가입
@@ -78,6 +78,6 @@ public class ManagerController {
             @RequestBody ReserveConfirm reserveConfirm
     ) {
         return ResponseEntity.ok(manageService.confirmReserve(reserveConfirm, token)
-                + "번 예약을 " + reserveConfirm.isConfirmYn() + " 상태로 변경하였습니다.");
+                + "번 예약을 " + reserveConfirm.isConfirmYn() + " 하였습니다.");
     }
 }

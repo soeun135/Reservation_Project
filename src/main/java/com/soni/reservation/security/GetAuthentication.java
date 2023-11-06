@@ -1,7 +1,7 @@
 package com.soni.reservation.security;
 
-import com.soni.reservation.service.ManagerService;
-import com.soni.reservation.service.MemberService;
+import com.soni.reservation.service.ManagerServiceImpl;
+import com.soni.reservation.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class GetAuthentication {
     private UserDetailsService userDetailsService;
-    private final ManagerService manageService;
-    private final MemberService memberService;
+    private final ManagerServiceImpl manageService;
+    private final MemberServiceImpl memberService;
     private final TokenProvider tokenProvider;
 
     public Authentication getAuthentication(String jwt) {

@@ -1,6 +1,6 @@
 package com.soni.reservation.controller;
 
-import com.soni.reservation.service.KioskService;
+import com.soni.reservation.service.KioskServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/kiosk")
 @RequiredArgsConstructor
 public class KioskController {
-    private final KioskService reserveService;
+    private final KioskServiceImpl reserveService;
 
 
     /**
