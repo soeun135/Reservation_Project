@@ -16,7 +16,7 @@ public interface ManagerService {
      * - Role : ROLE_MANAGER로 set.
      * - 비밀번호 : PasswordEncoder.encode이용 암호화해서 저장.
      */
-    Manager register(ManagerDto.RegisterRequest manager);
+    ManagerDto.RegisterResponse register(ManagerDto.RegisterRequest manager);
 
     /**
      * 로그인 유효한지 확인

@@ -22,7 +22,7 @@ public class StoreController {
     public ResponseEntity<?> searchStore(
             @PathVariable String storeName) {
 
-        return ResponseEntity.ok(Store.toResponse(storeService.searchStore(storeName)));
+        return ResponseEntity.ok(storeService.searchStore(storeName));
     }
 
 

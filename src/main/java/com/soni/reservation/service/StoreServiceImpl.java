@@ -1,6 +1,7 @@
 package com.soni.reservation.service;
 
 import com.soni.reservation.domain.Store;
+import com.soni.reservation.dto.StoreDto;
 import com.soni.reservation.exception.StoreException;
 import com.soni.reservation.repository.ManagerRepository;
 import com.soni.reservation.repository.StoreRepository;
@@ -19,8 +20,8 @@ public class StoreServiceImpl implements StoreService{
     /**
      * 매장 검색
      */
-    public Store searchStore(String storeName) {
-        return storeRepository.findByStoreName(storeName)
-                .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
+    public StoreDto.SearchStoreResponse searchStore(String storeName) {
+        return Store.toResponse(storeRepository.findByStoreName(storeName)
+                .orElseThrow(() -> new StoreException(STORE_NOT_FOUND)));
     }
 }

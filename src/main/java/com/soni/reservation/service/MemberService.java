@@ -1,6 +1,5 @@
 package com.soni.reservation.service;
 
-import com.soni.reservation.domain.Member;
 import com.soni.reservation.dto.LoginDto;
 import com.soni.reservation.dto.MemberDto;
 import com.soni.reservation.dto.ReserveDto;
@@ -13,7 +12,7 @@ public interface MemberService {
      * - Role : ROLE_MEMBER로 set.
      * - 비밀번호 : PasswordEncoder.encode이용 암호화해서 저장.
      */
-    Member register(MemberDto.RegisterRequest member);
+    MemberDto.RegisterResponse register(MemberDto.RegisterRequest member);
 
     /**
      * 로그인 유효한지 확인

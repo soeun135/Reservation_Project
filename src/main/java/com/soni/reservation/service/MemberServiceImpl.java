@@ -49,12 +49,12 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
     /**
      * 이용자 회원가입
      */
-    public Member register(MemberDto.RegisterRequest member) {
+    public MemberDto.RegisterResponse register(MemberDto.RegisterRequest member) {
         validate(member);
 
         member.setRole(String.valueOf(Authority.ROLE_MEMBER));
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-        return memberRepository.save(member.toEntity());
+        return Member.toResponse(memberRepository.save(member.toEntity()));
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.soni.reservation.controller;
 
-import com.soni.reservation.domain.Manager;
 import com.soni.reservation.dto.ManagerDto;
 import com.soni.reservation.dto.ReserveConfirm;
 import com.soni.reservation.dto.StoreDto;
@@ -24,7 +23,7 @@ public class ManagerController {
     @PostMapping("/register")
     public ResponseEntity<?> register(
             @RequestBody @Valid ManagerDto.RegisterRequest request) {
-        return ResponseEntity.ok(Manager.toResponse(manageService.register(request)));
+        return ResponseEntity.ok(manageService.register(request));
     }
 
     /**

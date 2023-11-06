@@ -1,6 +1,5 @@
 package com.soni.reservation.controller;
 
-import com.soni.reservation.domain.Member;
 import com.soni.reservation.dto.LoginDto;
 import com.soni.reservation.dto.MemberDto;
 import com.soni.reservation.dto.ReserveDto;
@@ -26,7 +25,7 @@ public class MemberController {
     public ResponseEntity<?> register(
             @RequestBody @Valid MemberDto.RegisterRequest request) {
 
-        return ResponseEntity.ok(Member.toResponse(memberService.register(request)));
+        return ResponseEntity.ok(memberService.register(request));
     }
 
     /**

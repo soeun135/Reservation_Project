@@ -48,12 +48,12 @@ public class ManagerServiceImpl implements UserDetailsService, ManagerService{
     /**
      * 점장 회원가입
      */
-    public Manager register(ManagerDto.RegisterRequest manager) {
+    public ManagerDto.RegisterResponse register(ManagerDto.RegisterRequest manager) {
         validate(manager);
 
         manager.setRole(String.valueOf(Authority.ROLE_MANAGER));
         manager.setPassword(this.passwordEncoder.encode(manager.getPassword()));
-        return this.managerRepository.save(manager.toEntity());
+        return Manager.toResponse(this.managerRepository.save(manager.toEntity()));
     }
 
     /**
