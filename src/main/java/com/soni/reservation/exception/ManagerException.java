@@ -4,13 +4,9 @@ import com.soni.reservation.type.ErrorCode;
 import lombok.*;
 
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class ManagerException extends RuntimeException{
-    private ErrorCode errorCode;
-    private String errorMessage;
+    private final ErrorCode errorCode;
+    private final String errorMessage;
 
     public ManagerException(ErrorCode errorCode) {
         this.errorCode = errorCode;
